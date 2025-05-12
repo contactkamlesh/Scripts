@@ -1,0 +1,55 @@
+==================================================================================================
+Vulnerable Code:
+===============
+	import smtplib
+		
+	# Hardcoded sensitive credentials
+	SMTP_SERVER = "smtp.example.com"
+	USERNAME = "admin@example.com"
+	PASSWORD = "P@ssw0rd123"  #  Hardcoded!
+	
+	def send_email(to_email, subject, body):
+	    with smtplib.SMTP(SMTP_SERVER, 587) as server:
+	        server.starttls()
+	        server.login(USERNAME, PASSWORD)
+	        message = f"Subject: {subject}\n\n{body}"
+	        server.sendmail(USERNAME, to_email, message)
+	        print("Email sent!")
+		
+	send_email("victim@example.com", "Test Email", "This is a test.")
+
+
+==================================================================================================
+
+Secure Code:
+===========
+	import os
+	import smtplib
+		
+	# Retrieve credentials from environment variables
+	SMTP_SERVER = os.getenv("SMTP_SERVER")
+	USERNAME = os.getenv("SMTP_USERNAME")
+	PASSWORD = os.getenv("SMTP_PASSWORD")
+	
+	def send_email(to_email, subject, body):
+	    if not (SMTP_SERVER and USERNAME and PASSWORD):
+	        print("Error: Missing email configuration.")
+	        return
+	
+	    with smtplib.SMTP(SMTP_SERVER, 587) as server:
+	        server.starttls()
+	        server.login(USERNAME, PASSWORD)
+	        message = f"Subject: {subject}\n\n{body}"
+	        server.sendmail(USERNAME, to_email, message)
+	        print("Email sent!")
+		
+	send_email("victim@example.com", "Test Email", "This is a test.")
+		
+		
+	Usage (set environment variables before running):
+		export SMTP_SERVER="smtp.example.com"
+		export SMTP_USERNAME="admin@example.com"
+		export SMTP_PASSWORD="SuperSecretPassword"
+
+
+====================================================================================================

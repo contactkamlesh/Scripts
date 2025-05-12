@@ -1,0 +1,28 @@
+==================================================================================================
+Vulnerable Code:
+===============
+	import pickle
+
+	# Simulate receiving a pickled object from an untrusted source
+	data = input("Paste your pickled object: ")
+	obj = pickle.loads(bytes.fromhex(data))
+		
+	print("Deserialized object:", obj)
+
+
+==================================================================================================
+
+Secure Code:
+===========
+	import json
+	
+	# Simulate receiving serialized JSON data
+	data = input("Paste your JSON object: ")
+	
+	try:
+	    obj = json.loads(data)
+	    print("Deserialized object:", obj)
+	except json.JSONDecodeError:
+	print("Invalid JSON data.")
+
+====================================================================================================

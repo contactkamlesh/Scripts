@@ -1,0 +1,28 @@
+==================================================================================================
+Vulnerable Code:
+===============
+	import os
+		
+	# Simulate user input
+	filename = input("Enter filename to list: ")
+	
+	# Dangerous system command
+	os.system(f"ls {filename}")
+
+==================================================================================================
+
+Secure Code:
+===========
+	import subprocess
+	
+	# Simulate user input
+	filename = input("Enter filename to list: ")
+	
+	try:
+	    # Safe command using subprocess.run with argument list
+	    result = subprocess.run(["ls", filename], check=True, text=True, capture_output=True)
+	    print(result.stdout)
+	except subprocess.CalledProcessError as e:
+	    print(f"Error: {e}")
+
+====================================================================================================

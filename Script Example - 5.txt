@@ -1,0 +1,26 @@
+==================================================================================================
+Vulnerable Code:
+===============
+	# This script writes a log file with sensitive information
+	 
+	with open("app.log", "w") as log_file:
+	    log_file.write("Admin token: abcd1234efgh5678\n")
+            print("Log file written.")
+
+
+==================================================================================================
+
+Secure Code:
+===========
+	import os
+	import stat
+	
+	log_path = "app.log"
+	
+	# Create the file securely with restrictive permissions
+	with open(log_path, "w") as log_file:
+	    os.chmod(log_path, stat.S_IRUSR | stat.S_IWUSR)  # rw------- (0600)
+	    log_file.write("Admin token: abcd1234efgh5678\n")
+	    print("Log file written securely.")
+
+====================================================================================================
