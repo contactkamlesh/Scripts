@@ -1,0 +1,50 @@
+==================================================================================================
+Vulnerable Code:
+===============
+	import sqlite3
+		
+	# Simulate user input
+	username = input("Enter your username: ")
+	password = input("Enter your password: ")
+		
+	# Connect to database
+	conn = sqlite3.connect("users.db")
+	cursor = conn.cursor()
+		
+	# Vulnerable query using string formatting
+	query = f"SELECT * FROM users WHERE username = '{username}' AND password = '{password}'"
+	cursor.execute(query)
+		
+	# Process results
+	user = cursor.fetchone()
+	if user:
+	    print("Login successful!")
+	else:
+	    print("Invalid credentials.")
+
+==================================================================================================
+
+Secure Code:
+===========
+	import sqlite3
+	
+	# Simulate user input
+	username = input("Enter your username: ")
+	password = input("Enter your password: ")
+	
+	# Connect to database
+	conn = sqlite3.connect("users.db")
+	cursor = conn.cursor()
+	
+	# Safe query using parameterized statements
+	query = "SELECT * FROM users WHERE username = ? AND password = ?"
+	cursor.execute(query, (username, password))
+	
+	# Process results
+	user = cursor.fetchone()
+	if user:
+	    print("Login successful!")
+	else:
+	    print("Invalid credentials.")
+
+====================================================================================================
